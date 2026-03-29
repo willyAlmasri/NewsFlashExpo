@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "cd preview && next dev --port 3000",
-    "build": "cd preview && next build",
+    "dev": "next dev --port 3000",
+    "build": "next build",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -50,7 +50,12 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@types/node": "^22",
     "@types/react": "~19.1.10",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4",
+    "autoprefixer": "^10",
     "typescript": "~5.9.2"
   },
   "private": true
