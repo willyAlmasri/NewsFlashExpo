@@ -114,7 +114,7 @@ export default function TodayScreen() {
       <div className="mt-5">
         <div className="flex items-center justify-between mb-3">
           <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest font-sans">Top Stories</p>
-          <span className="text-[#8aa8ff] text-xs font-sans">See all</span>
+          <span className="text-[#8aa8ff] text-xs font-sans cursor-pointer">See all</span>
         </div>
         <div className="flex flex-col gap-2">
           {ARTICLES.slice(0, 5).map((a) => (
@@ -125,9 +125,9 @@ export default function TodayScreen() {
                   <p className="font-serif text-sm font-semibold text-[#f0f0f0] leading-snug line-clamp-2">{a.title}</p>
                   <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                     <span className="text-[#8aa8ff] text-[10px] font-sans">{a.source}</span>
-                    <span className="text-[#3a3a3a]">·</span>
+                    <span className="text-[#3a3a3a]">&middot;</span>
                     <span className="text-[#6b6b6b] text-[10px] font-sans">{a.tag}</span>
-                    <span className="text-[#3a3a3a]">·</span>
+                    <span className="text-[#3a3a3a]">&middot;</span>
                     <span className="text-[#6b6b6b] text-[10px] font-sans">{timeAgo(a.date)}</span>
                   </div>
                 </div>
@@ -141,7 +141,6 @@ export default function TodayScreen() {
       <div className="mt-5">
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-3 font-sans">Trending Topics</p>
 
-        {/* Lead topic */}
         {(() => {
           const lead = topics[0];
           const meta = TREND_META[lead.trend];
@@ -200,11 +199,11 @@ export default function TodayScreen() {
         </div>
       </div>
 
-      {/* Watchlist Highlights */}
+      {/* Watchlist */}
       <div className="mt-5">
         <div className="flex items-center justify-between mb-3">
           <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest font-sans">Watchlist</p>
-          <span className="text-[#8aa8ff] text-xs font-sans">See all</span>
+          <span className="text-[#8aa8ff] text-xs font-sans cursor-pointer">See all</span>
         </div>
         <div className="flex flex-col gap-2">
           {WATCHLIST.slice(0, 4).map((item) => {

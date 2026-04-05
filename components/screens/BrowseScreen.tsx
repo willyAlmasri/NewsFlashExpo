@@ -21,7 +21,6 @@ export default function BrowseScreen() {
       {/* Header */}
       <div className="px-4 pt-4 pb-3">
         <h1 className="font-serif text-2xl font-semibold text-[#f0f0f0] mb-3">Browse</h1>
-        {/* Search */}
         <div className="flex items-center gap-2 bg-[#2e2e2e] rounded-xl px-3 py-2.5">
           <Search size={16} color="#6b6b6b" strokeWidth={2} />
           <input
@@ -35,12 +34,12 @@ export default function BrowseScreen() {
       </div>
 
       {/* Filter chips */}
-      <div className="flex gap-2 px-4 pb-3 overflow-x-auto scrollbar-none" style={{ scrollbarWidth: "none" }}>
+      <div className="flex gap-2 px-4 pb-3 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
         {FILTERS.map((f) => (
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium font-sans border transition-colors"
+            className="shrink-0 px-3 py-1.5 rounded-full text-xs font-medium font-sans border"
             style={{
               backgroundColor: activeFilter === f ? "#8aa8ff" : "#2e2e2e",
               color: activeFilter === f ? "#111" : "#a0a0a0",
@@ -69,7 +68,7 @@ export default function BrowseScreen() {
                   <p className="font-serif text-sm font-semibold text-[#f0f0f0] leading-snug line-clamp-2">{a.title}</p>
                   <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                     <span className="text-[#8aa8ff] text-[10px] font-sans">{a.source}</span>
-                    <span className="text-[#3a3a3a]">·</span>
+                    <span className="text-[#3a3a3a]">&middot;</span>
                     <span
                       className="text-[10px] px-1.5 py-0.5 rounded font-sans"
                       style={{ backgroundColor: "#3a3a3a", color: "#a0a0a0" }}
@@ -98,7 +97,7 @@ export default function BrowseScreen() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] text-[#6b6b6b] font-sans">{c.sector}</span>
-                  <span className="text-[#3a3a3a]">·</span>
+                  <span className="text-[#3a3a3a]">&middot;</span>
                   <span className="text-[10px] text-[#6b6b6b] font-sans">{c.articleCount} articles</span>
                 </div>
               </div>
@@ -122,7 +121,7 @@ export default function BrowseScreen() {
             <div key={s.id} className="bg-[#2e2e2e] rounded-xl px-3 py-2.5 flex items-center justify-between">
               <div>
                 <p className="font-sans font-medium text-sm text-[#f0f0f0]">{s.name}</p>
-                <p className="text-[10px] text-[#6b6b6b] font-sans">{s.category} · {s.articlesPerDay}/day</p>
+                <p className="text-[10px] text-[#6b6b6b] font-sans">{s.category} &middot; {s.articlesPerDay}/day</p>
               </div>
               <div
                 className="w-2 h-2 rounded-full"

@@ -53,9 +53,9 @@ export const STATS = {
 };
 
 export const COMPANIES = [
-  { id: "c1", name: "Commercial International Bank", ticker: "COMI.CA", sector: "Banking", sentiment: "neutral", articleCount: 156, tags: ["Banking", "Regulation", "Earnings", "Digital Banking"], highlights: ["Under regulatory review for AML compliance", "Digital banking platform launch in Q2", "Strong Q4 loan growth of 18%"], sentimentScore: -0.8 },
-  { id: "c2", name: "QNB Group", ticker: "QNBK.QA", sector: "Banking", sentiment: "positive", articleCount: 198, tags: ["Earnings", "Expansion", "Banking"], highlights: ["Record Q4 2025 earnings", "Expanding into Southeast Asia", "Digital transformation roadmap"], sentimentScore: 4.2 },
-  { id: "c3", name: "Telecom Egypt", ticker: "ETEL.CA", sector: "Telecommunications", sentiment: "positive", articleCount: 89, tags: ["5G", "Infrastructure", "Revenue"], highlights: ["$200M 5G deal with Ericsson", "Fiber network expansion", "Revenue growth of 22% YoY"], sentimentScore: 2.8 },
+  { id: "c1", name: "Commercial International Bank", ticker: "COMI.CA", sector: "Banking", sentiment: "neutral", articleCount: 156, sentimentScore: -0.8 },
+  { id: "c2", name: "QNB Group", ticker: "QNBK.QA", sector: "Banking", sentiment: "positive", articleCount: 198, sentimentScore: 4.2 },
+  { id: "c3", name: "Telecom Egypt", ticker: "ETEL.CA", sector: "Telecommunications", sentiment: "positive", articleCount: 89, sentimentScore: 2.8 },
 ];
 
 export const SOURCES = [

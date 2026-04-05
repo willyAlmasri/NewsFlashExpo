@@ -15,20 +15,12 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
   return (
     <button
       onClick={onToggle}
-      className="relative inline-flex items-center rounded-full transition-colors shrink-0"
-      style={{
-        width: 38,
-        height: 22,
-        backgroundColor: on ? "#8aa8ff" : "#3a3a3a",
-      }}
+      className="relative inline-flex items-center rounded-full shrink-0"
+      style={{ width: 38, height: 22, backgroundColor: on ? "#8aa8ff" : "#3a3a3a" }}
     >
       <span
-        className="inline-block rounded-full bg-white transition-transform"
-        style={{
-          width: 16,
-          height: 16,
-          transform: on ? "translateX(18px)" : "translateX(3px)",
-        }}
+        className="inline-block rounded-full bg-white"
+        style={{ width: 16, height: 16, transform: on ? "translateX(18px)" : "translateX(3px)", transition: "transform 0.15s" }}
       />
     </button>
   );
@@ -41,11 +33,8 @@ export default function SettingsScreen() {
   const [darkMode, setDarkMode] = useState(true);
   const [aiSummary, setAiSummary] = useState(true);
 
-  const toggleNotif = (id: string) => setNotifs((prev) => ({ ...prev, [id]: !prev[id] }));
-
   return (
     <div className="phone-scroll overflow-y-auto pb-6" style={{ background: "#1a1a1a", height: "100%" }}>
-      {/* Header */}
       <div className="px-4 pt-4 pb-3">
         <h1 className="font-serif text-2xl font-semibold text-[#f0f0f0]">Settings</h1>
       </div>
@@ -53,19 +42,13 @@ export default function SettingsScreen() {
       {/* Profile card */}
       <div className="px-4 mb-5">
         <div className="bg-[#2e2e2e] rounded-xl p-4 flex items-center gap-3">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-            style={{ backgroundColor: "#8aa8ff20" }}
-          >
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#8aa8ff20" }}>
             <User size={22} color="#8aa8ff" strokeWidth={1.8} />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-sans font-semibold text-[#f0f0f0]">Alex Johnson</p>
             <p className="text-[#6b6b6b] text-xs font-sans">alex@newsflash.io</p>
-            <span
-              className="inline-block mt-1 text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded font-sans"
-              style={{ backgroundColor: "#8aa8ff20", color: "#8aa8ff" }}
-            >
+            <span className="inline-block mt-1 text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded font-sans" style={{ backgroundColor: "#8aa8ff20", color: "#8aa8ff" }}>
               Pro Plan
             </span>
           </div>
@@ -73,7 +56,7 @@ export default function SettingsScreen() {
         </div>
       </div>
 
-      {/* App preferences */}
+      {/* Preferences */}
       <div className="px-4 mb-5">
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-2 font-sans">Preferences</p>
         <div className="bg-[#2e2e2e] rounded-xl overflow-hidden">
@@ -111,13 +94,13 @@ export default function SettingsScreen() {
                 <p className="text-sm text-[#f0f0f0] font-sans font-medium">{opt.label}</p>
                 <p className="text-[10px] text-[#6b6b6b] font-sans leading-relaxed">{opt.description}</p>
               </div>
-              <Toggle on={notifs[opt.id]} onToggle={() => toggleNotif(opt.id)} />
+              <Toggle on={notifs[opt.id]} onToggle={() => setNotifs((prev) => ({ ...prev, [opt.id]: !prev[opt.id] }))} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Data & privacy links */}
+      {/* Data & Privacy */}
       <div className="px-4 mb-5">
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-2 font-sans">Data & Privacy</p>
         <div className="bg-[#2e2e2e] rounded-xl overflow-hidden">

@@ -52,12 +52,12 @@ export default function AlertsScreen() {
       </div>
 
       {/* Filter tabs */}
-      <div className="px-4 mb-4 flex gap-1 bg-[#2e2e2e] rounded-xl p-1 mx-4">
+      <div className="mx-4 mb-4 flex gap-1 bg-[#2e2e2e] rounded-xl p-1">
         {FILTER_TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveFilter(tab)}
-            className="flex-1 py-1.5 rounded-lg text-xs font-medium font-sans transition-colors"
+            className="flex-1 py-1.5 rounded-lg text-xs font-medium font-sans"
             style={{
               backgroundColor: activeFilter === tab ? "#3a3a3a" : "transparent",
               color: activeFilter === tab ? "#f0f0f0" : "#6b6b6b",

@@ -53,7 +53,7 @@ export default function DashboardsScreen() {
         <p className="text-[#6b6b6b] text-xs font-sans mt-0.5">MENA market intelligence overview</p>
       </div>
 
-      {/* Coverage stats */}
+      {/* Stats row */}
       <div className="grid grid-cols-3 gap-2 mt-4">
         {[
           { label: "Articles", value: STATS.totalArticles.toLocaleString() },
@@ -68,7 +68,7 @@ export default function DashboardsScreen() {
       </div>
 
       {/* Sentiment breakdown */}
-      <div className="mt-5 bg-[#2e2e2e] rounded-xl p-4">
+      <div className="mt-4 bg-[#2e2e2e] rounded-xl p-4">
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-3 font-sans">Sentiment Distribution</p>
         <div className="flex h-3 rounded-full overflow-hidden gap-px mb-3">
           <div style={{ flex: sb.positive, backgroundColor: "#10b981", borderRadius: "6px 0 0 6px" }} />
@@ -101,8 +101,8 @@ export default function DashboardsScreen() {
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-3 font-sans">Topic Pulse</p>
         <div className="flex flex-col gap-2.5">
           {STATS.trendingTopics.map((t, i) => {
-            const max = STATS.trendingTopics[0].count;
-            const pct = Math.round((t.count / max) * 100);
+            const maxT = STATS.trendingTopics[0].count;
+            const pct = Math.round((t.count / maxT) * 100);
             const color = t.trend === "up" ? "#10b981" : t.trend === "down" ? "#ef4444" : "#eab308";
             return (
               <div key={t.topic}>
@@ -114,7 +114,7 @@ export default function DashboardsScreen() {
                   <span className="text-[10px] font-mono" style={{ color }}>{t.count}</span>
                 </div>
                 <div className="h-1 rounded-full bg-[#3a3a3a] ml-6 overflow-hidden">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: color }} />
+                  <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
                 </div>
               </div>
             );
@@ -122,7 +122,7 @@ export default function DashboardsScreen() {
         </div>
       </div>
 
-      {/* Watchlist sentiment table */}
+      {/* Watchlist sentiment */}
       <div className="mt-4 bg-[#2e2e2e] rounded-xl p-4">
         <p className="text-[#6b6b6b] text-[10px] font-semibold uppercase tracking-widest mb-3 font-sans">Watchlist Sentiment</p>
         <div className="flex flex-col divide-y divide-[#2a2a2a]">
