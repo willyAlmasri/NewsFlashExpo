@@ -1,14 +1,13 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Pressable, ScrollView } from 'react-native';
-import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, Pressable, ScrollView, Dimensions } from 'react-native';
+import Animated, { FadeInDown, FadeIn, FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { Eye, EyeOff, Zap } from 'lucide-react-native';
-import { useTheme, spacing, palette, radius } from '@/theme';
+import { Eye, EyeOff, TrendingUp, BarChart2, Globe, Shield } from 'lucide-react-native';
+import { useTheme, spacing, palette, radius, shadows } from '@/theme';
 import { typePresets, fontFamily } from '@/theme/typography';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Chip } from '@/components/ui/Chip';
 import { Toggle } from '@/components/ui/Toggle';
 import { useAuthStore } from '@/store/authStore';
 import { requestPasswordReset } from '@/services/auth';
@@ -18,8 +17,10 @@ import type { AuthStackParamList } from '@/types/navigation';
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 type AuthMode = 'signin' | 'signup';
 
+const { width } = Dimensions.get('window');
+
 export function LoginScreen({ navigation }: Props) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const signIn = useAuthStore((state) => state.signIn);
   const isLoading = useAuthStore((state) => state.isLoading);
   const [mode, setMode] = useState<AuthMode>('signin');
@@ -134,129 +135,209 @@ export function LoginScreen({ navigation }: Props) {
     }
   }, [email]);
 
+  const features = [
+    { icon: TrendingUp, label: 'Real-time Market Data' },
+    { icon: BarChart2, label: 'Advanced Analytics' },
+    { icon: Globe, label: 'Global Coverage' },
+    { icon: Shield, label: 'Enterprise Security' },
+  ];
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar style={colors.statusBarStyle === 'dark' ? 'dark' : 'light'} />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      
+      {/* Background gradient */}
       <LinearGradient
-        colors={['transparent', palette.periwinkle + '08', 'transparent']}
+        colors={isDark 
+          ? [colors.background, palette.navyLight, colors.background]
+          : [colors.background, palette.gray50, colors.background]
+        }
         style={StyleSheet.absoluteFill}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       />
+
+      {/* Decorative elements */}
+      <View style={[styles.decorCircle, styles.decorCircle1, { backgroundColor: palette.blue + '08' }]} />
+      <View style={[styles.decorCircle, styles.decorCircle2, { backgroundColor: palette.teal + '06' }]} />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-          <Animated.View entering={FadeIn.delay(100).duration(600)} style={styles.logoSection}>
-            <View style={[styles.logoIcon, { backgroundColor: palette.periwinkle + '15' }]}>
-              <Zap size={32} color={palette.periwinkle} fill={palette.periwinkle} strokeWidth={0} />
+        <ScrollView 
+          contentContainerStyle={styles.scrollContent} 
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header Section */}
+          <Animated.View entering={FadeInUp.delay(100).duration(600)} style={styles.header}>
+            <View style={[styles.logoContainer, { backgroundColor: palette.blue }]}>
+              <TrendingUp size={28} color={palette.white} strokeWidth={2.5} />
             </View>
-            <Text style={[styles.logoText, { color: colors.text }]}>NewsFlash</Text>
-            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-              Content Intelligence
+            <Text style={[styles.brandName, { color: colors.text }]}>NewsFlash</Text>
+            <Text style={[styles.tagline, { color: colors.textSecondary }]}>
+              Market Intelligence Platform
             </Text>
           </Animated.View>
 
-          <Animated.View entering={FadeInDown.delay(220).springify().damping(15)} style={styles.modeRow}>
-            <Chip label="Sign In" selected={mode === 'signin'} onPress={() => handleModeChange('signin')} />
-            <Chip label="Sign Up" selected={mode === 'signup'} onPress={() => handleModeChange('signup')} />
+          {/* Features Row */}
+          <Animated.View entering={FadeIn.delay(300).duration(500)} style={styles.featuresRow}>
+            {features.map((feature, index) => (
+              <View key={feature.label} style={styles.featureItem}>
+                <feature.icon size={16} color={colors.primary} strokeWidth={2} />
+                <Text style={[styles.featureLabel, { color: colors.textSecondary }]}>
+                  {feature.label}
+                </Text>
+              </View>
+            ))}
           </Animated.View>
 
-          <Animated.View entering={FadeInDown.delay(300).springify().damping(15)} style={styles.form}>
-            {mode === 'signup' ? (
-              <>
+          {/* Card Container */}
+          <Animated.View 
+            entering={FadeInDown.delay(200).springify().damping(18)}
+            style={[
+              styles.card, 
+              { 
+                backgroundColor: isDark ? colors.surface : colors.surfaceElevated,
+                borderColor: colors.border,
+              },
+              !isDark && shadows.card,
+            ]}
+          >
+            {/* Mode Toggle */}
+            <View style={[styles.modeToggle, { backgroundColor: colors.muted }]}>
+              <Pressable
+                style={[
+                  styles.modeButton,
+                  mode === 'signin' && { backgroundColor: colors.primary },
+                ]}
+                onPress={() => handleModeChange('signin')}
+              >
+                <Text style={[
+                  styles.modeButtonText,
+                  { color: mode === 'signin' ? palette.white : colors.textSecondary },
+                ]}>
+                  Sign In
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.modeButton,
+                  mode === 'signup' && { backgroundColor: colors.primary },
+                ]}
+                onPress={() => handleModeChange('signup')}
+              >
+                <Text style={[
+                  styles.modeButtonText,
+                  { color: mode === 'signup' ? palette.white : colors.textSecondary },
+                ]}>
+                  Sign Up
+                </Text>
+              </Pressable>
+            </View>
+
+            {/* Form Fields */}
+            <View style={styles.form}>
+              {mode === 'signup' && (
                 <Input
                   label="Full Name"
-                  placeholder="Your name"
+                  placeholder="Enter your full name"
                   value={name}
                   onChangeText={setName}
                 />
-              </>
-            ) : null}
+              )}
 
-            <Input
-              label="Email"
-              placeholder="you@company.com"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-            />
-            <Input
-              label="Password"
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              autoComplete={mode === 'signin' ? 'password' : 'new-password'}
-              rightIcon={passwordToggle}
-            />
-
-            {mode === 'signup' ? (
               <Input
-                label="Confirm Password"
-                placeholder="Repeat your password"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry={!showConfirmPassword}
-                autoComplete="new-password"
-                rightIcon={confirmPasswordToggle}
+                label="Email Address"
+                placeholder="you@company.com"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
               />
-            ) : null}
+              
+              <Input
+                label="Password"
+                placeholder="Enter your password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                autoComplete={mode === 'signin' ? 'password' : 'new-password'}
+                rightIcon={passwordToggle}
+              />
 
-            <View
-              style={[
-                styles.utilityRow,
-                mode === 'signup' && styles.signupUtilityRow,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.borderSubtle,
-                },
-              ]}
-            >
-              <View style={styles.utilityCopy}>
-                <Text style={[typePresets.labelSm, { color: colors.text }]}>Remember this device</Text>
-                <Text style={[typePresets.bodySm, { color: colors.textSecondary }]}>
-                  Keep the session after the app restarts.
-                </Text>
+              {mode === 'signup' && (
+                <Input
+                  label="Confirm Password"
+                  placeholder="Repeat your password"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={!showConfirmPassword}
+                  autoComplete="new-password"
+                  rightIcon={confirmPasswordToggle}
+                />
+              )}
+
+              {/* Remember Session */}
+              <View style={[styles.rememberRow, { borderColor: colors.border }]}>
+                <View style={styles.rememberContent}>
+                  <Text style={[typePresets.label, { color: colors.text }]}>
+                    Remember me
+                  </Text>
+                  <Text style={[typePresets.bodySm, { color: colors.textTertiary }]}>
+                    Stay signed in on this device
+                  </Text>
+                </View>
+                <Toggle value={rememberSession} onValueChange={setRememberSession} />
               </View>
-              <Toggle value={rememberSession} onValueChange={setRememberSession} />
+
+              {/* Error/Notice Messages */}
+              {error ? (
+                <View style={[styles.messageBox, { backgroundColor: colors.danger + '12' }]}>
+                  <Text style={[typePresets.bodySm, { color: colors.danger }]}>
+                    {error}
+                  </Text>
+                </View>
+              ) : null}
+
+              {notice ? (
+                <View style={[styles.messageBox, { backgroundColor: colors.primary + '12' }]}>
+                  <Text style={[typePresets.bodySm, { color: colors.primary }]}>
+                    {notice}
+                  </Text>
+                </View>
+              ) : null}
             </View>
 
-            {error ? (
-              <Text style={[typePresets.bodySm, styles.feedbackText, { color: colors.danger }]}>
-                {error}
-              </Text>
-            ) : null}
-
-            {notice ? (
-              <Text style={[typePresets.bodySm, styles.feedbackText, { color: colors.primary }]}>
-                {notice}
-              </Text>
-            ) : null}
+            {/* Actions */}
+            <View style={styles.actions}>
+              <Button
+                label={mode === 'signin' ? 'Sign In' : 'Create Account'}
+                onPress={handleAuth}
+                loading={isLoading}
+                fullWidth
+                size="lg"
+              />
+              
+              {mode === 'signin' && (
+                <Pressable 
+                  onPress={handleForgotPassword} 
+                  style={({ pressed }) => [styles.forgotLink, pressed && styles.pressed]}
+                >
+                  <Text style={[typePresets.label, { color: colors.primary }]}>
+                    Forgot password?
+                  </Text>
+                </Pressable>
+              )}
+            </View>
           </Animated.View>
 
-          <Animated.View entering={FadeInDown.delay(500).springify().damping(15)} style={styles.actions}>
-            <Button
-              label={mode === 'signin' ? 'Sign In' : 'Continue'}
-              onPress={handleAuth}
-              loading={isLoading}
-              fullWidth
-              size="lg"
-            />
-            {mode === 'signin' ? (
-              <Pressable onPress={handleForgotPassword} style={({ pressed }) => [styles.resetLink, pressed && styles.pressed]}>
-                <Text style={[typePresets.labelSm, { color: colors.primary }]}>Forgot password?</Text>
-              </Pressable>
-            ) : null}
-          </Animated.View>
-
-          <Animated.View entering={FadeIn.delay(700).duration(400)}>
-            <Text style={[typePresets.bodySm, { color: colors.textTertiary, textAlign: 'center' }]}>
-              Powered by NewsFlash AI
+          {/* Footer */}
+          <Animated.View entering={FadeIn.delay(600).duration(400)} style={styles.footer}>
+            <Text style={[typePresets.bodySm, { color: colors.textTertiary }]}>
+              Trusted by leading financial institutions worldwide
             </Text>
           </Animated.View>
         </ScrollView>
@@ -269,78 +350,128 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  decorCircle: {
+    position: 'absolute',
+    borderRadius: 9999,
+  },
+  decorCircle1: {
+    width: width * 0.8,
+    height: width * 0.8,
+    top: -width * 0.3,
+    right: -width * 0.3,
+  },
+  decorCircle2: {
+    width: width * 0.6,
+    height: width * 0.6,
+    bottom: -width * 0.2,
+    left: -width * 0.2,
+  },
   keyboardView: {
     flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingHorizontal: spacing.xxl,
-    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xxxl,
   },
-  logoSection: {
+  header: {
     alignItems: 'center',
-    marginBottom: spacing.xxxl,
+    marginBottom: spacing.xl,
   },
-  logoIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
+  logoContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: radius.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.base,
+    marginBottom: spacing.md,
   },
-  logoText: {
-    fontFamily: fontFamily.serifBold,
-    fontSize: 36,
-    lineHeight: 44,
+  brandName: {
+    fontFamily: fontFamily.sansBold,
+    fontSize: 28,
+    lineHeight: 34,
+    letterSpacing: -0.5,
   },
-  subtitle: {
-    fontFamily: fontFamily.serifItalic,
-    fontSize: 16,
-    lineHeight: 24,
+  tagline: {
+    fontFamily: fontFamily.sans,
+    fontSize: 15,
+    lineHeight: 22,
     marginTop: spacing.xxs,
   },
-  modeRow: {
+  featuresRow: {
     flexDirection: 'row',
-    gap: spacing.sm,
-    marginBottom: spacing.base,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.xl,
   },
-  form: {
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  featureLabel: {
+    fontFamily: fontFamily.sans,
+    fontSize: 11,
+    lineHeight: 14,
+  },
+  card: {
+    borderRadius: radius.xl,
+    borderWidth: 1,
+    padding: spacing.xl,
+    marginBottom: spacing.xl,
+  },
+  modeToggle: {
+    flexDirection: 'row',
+    borderRadius: radius.md,
+    padding: spacing.xxs,
     marginBottom: spacing.lg,
   },
-  utilityRow: {
+  modeButton: {
+    flex: 1,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+  },
+  modeButtonText: {
+    fontFamily: fontFamily.sansSemiBold,
+    fontSize: 14,
+  },
+  form: {
+    gap: spacing.xs,
+  },
+  rememberRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderRadius: radius.lg,
-    borderCurve: 'continuous',
-    paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    gap: spacing.base,
-  },
-  signupUtilityRow: {
+    borderTopWidth: 1,
     marginTop: spacing.sm,
   },
-  utilityCopy: {
+  rememberContent: {
     flex: 1,
     gap: spacing.xxs,
   },
-  feedbackText: {
+  messageBox: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
     marginTop: spacing.sm,
   },
   actions: {
-    marginBottom: spacing.xxl,
+    marginTop: spacing.lg,
   },
-  resetLink: {
+  forgotLink: {
     alignSelf: 'center',
-    marginTop: spacing.base,
+    marginTop: spacing.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    borderRadius: radius.full,
+  },
+  footer: {
+    alignItems: 'center',
   },
   pressed: {
-    opacity: 0.8,
+    opacity: 0.7,
   },
 });
